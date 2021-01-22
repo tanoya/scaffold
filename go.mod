@@ -1,3 +1,3 @@
-module github.com/tanoya/scaffold.git
+module github.com/tanoya/scaffold
 
 go 1.15
