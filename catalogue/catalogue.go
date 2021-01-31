@@ -17,26 +17,29 @@ type file struct {
 	Root     bool
 }
 
+// Root 根目录
 var Root = "./out"
+
+// ProjectName 工程名字
 var ProjectName = "" // 如果有值的话，就不走模板文件中的名字了
 
 // Build 构建工程
 func Build(path string) error {
-	tree, err := ReadTreeConfig(path)
+	tree, err := readTreeConfig(path)
 	if err != nil {
-		fmt.Errorf(err.Error())
+		fmt.Print(err.Error())
 		return err
 	}
 	err = WriteTree(tree)
 	if err != nil {
-		fmt.Errorf(err.Error())
+		fmt.Print(err.Error())
 		return err
 	}
 	return nil
 }
 
 // ReadTreeConfig 读取定义的目录结构的文件
-func ReadTreeConfig(path string) (*[]file, error) {
+func readTreeConfig(path string) (*[]file, error) {
 	strs, err := readLine(path)
 	if err != nil {
 		return nil, err
@@ -121,7 +124,7 @@ func parse(src []string) (*[]file, error) {
 	return &rt, nil
 }
 
-// WriteTree
+// WriteTree 创建
 func WriteTree(tree *[]file) error {
 	if len(*tree) == 0 {
 		return errors.New("请先定义目录结构模板")
@@ -139,18 +142,18 @@ func WriteTree(tree *[]file) error {
 	for i, _ := range *tree {
 		path, err := findPath(tree, i)
 		if err != nil {
-			fmt.Errorf(err.Error())
+			fmt.Print(err.Error())
 			continue
 		}
 		if (*tree)[i].Root || (*tree)[i].Type == "d" {
 			err = os.Mkdir(path, os.ModePerm)
 			if err != nil {
-				fmt.Errorf(err.Error())
+				fmt.Print(err.Error())
 			}
 		} else if (*tree)[i].Type == "f" {
 			_, err = os.Create(path)
 			if err != nil {
-				fmt.Errorf(err.Error())
+				fmt.Print(err.Error())
 			}
 		}
 	}
