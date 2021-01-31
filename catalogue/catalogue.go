@@ -139,7 +139,7 @@ func WriteTree(tree *[]file) error {
 			return err
 		}
 	}
-	for i, _ := range *tree {
+	for i := range *tree {
 		path, err := findPath(tree, i)
 		if err != nil {
 			fmt.Print(err.Error())
